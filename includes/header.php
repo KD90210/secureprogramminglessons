@@ -15,7 +15,7 @@ if (isset($_SESSION['loggedin'])) {
             <div class="text-right">
                 <p class="text-gray-500 text-sm"> Welkom,
                 <a href="transacties.php" class="text-blue-600 hover:underline">
-            <?= $username ?>
+            <?= htmlspecialchars($username, ENT_QUOTES, 'UTF-8') ?>
             </a>
         </p>
             </div>

@@ -34,7 +34,7 @@ $incomingTransactions = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $user['username'] ?> | Omanido</title>
+    <title><?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?> | Omanido</title>
     <!-- Voeg Tailwind CSS toe via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
 </head>
@@ -47,15 +47,16 @@ $incomingTransactions = $stmt->fetchAll();
             <div class="flex justify-center">
                 <img src="img/Omanido1.png" alt="Omanido Logo" class="mb-6 w-1/2">
             </div>
-            <h2 class="text-lg text-center font-bold mb-6"><?= $user['username'] ?></h2>
+            <h2 class="text-lg text-center font-bold mb-6">
+                <?= htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') ?></h2>
             <p class="text-center mb-6">Saldo: €<?= number_format($user['balance'], 2, ',', '.') ?></p>
             <div class="flex justify-center">
                 <a href="dashboard.php"
-                   class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Geld overmaken</a>
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Geld overmaken</a>
             </div>
             <div class="flex justify-center mt-6">
                 <a href="logout.php"
-                   class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Uitloggen</a>
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Uitloggen</a>
             </div>
         </div>
         <div class="col-span-1">
@@ -64,7 +65,7 @@ $incomingTransactions = $stmt->fetchAll();
             <div class="bg-red-100 p-2 rounded">
                 <?php foreach ($outgoingTransactions as $transaction): ?>
                     <div class="flex justify-between mb-2">
-                        <p><?= $transaction['description'] ?></p>
+                        <p><?= htmlspecialchars($transaction['description'], ENT_QUOTES, 'UTF-8') ?></p>
                         <p>€<?= number_format($transaction['amount'], 2, ',', '.') ?></p>
                     </div>
                 <?php endforeach; ?>
@@ -80,7 +81,7 @@ $incomingTransactions = $stmt->fetchAll();
                 <div class="bg-green-100 p-2 rounded">
                     <?php foreach ($incomingTransactions as $transaction): ?>
                         <div class="flex justify-between mb-2">
-                            <p><?= $transaction['description'] ?></p>
+                            <p><?= htmlspecialchars($transaction['description'], ENT_QUOTES, 'UTF-8') ?></p>
                             <p>€<?= number_format($transaction['amount'], 2, ',', '.') ?></p>
                         </div>
                     <?php endforeach; ?>
