@@ -6,6 +6,13 @@ include 'includes/db.php';
 include 'includes/userTable.php';
 include 'includes/transactionTable.php';
 
+if (!isset($_SESSION['login_attempts'])) {
+    $_SESSION['login_attempts'] = 0;
+}
+
+if ($_SESSION['login_attempts'] >= 5) {
+    die("Te veel pogingen. Probeer later opnieuw.");
+}
 //Controleer of post is geset
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     // Gebruikersnaam en wachtwoord uit post halen
@@ -13,24 +20,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     // kwetsbaar voor SQL injectie
-    $sql = "SELECT * FROM user WHERE username = ? AND password = ?";
+    $sql = "SELECT * FROM user WHERE username = ?";
     $result = $pdo->prepare($sql);
-    $result->execute([$username, $password]);
+    $result->execute([$username]);
     $user = $result->fetch();
 
-    // Controleer of er een rij is gevonden
-    if($result->rowCount() > 0) {
-        // Gebruiker is ingelogd
+    if ($user && password_verify($password, $user['password'])) {
         $_SESSION['loggedin'] = true;
         $_SESSION['username'] = $username;
         $_SESSION['user'] = $user;
 
         header("location: dashboard.php");
     } else {
-        // Gebruiker is niet ingelogd
+        $_SESSION['login_attempts']++;
         $error = "Gebruikersnaam of wachtwoord is onjuist";
     }
-
 }
 
 ?>
